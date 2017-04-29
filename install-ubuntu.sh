@@ -6,7 +6,7 @@ set -e
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get -y install python3-pip nginx sudo curl && apt-get clean
-pip3 install --upgrade pip3
+pip3 install --upgrade pip
 pip3 install --upgrade notebook
 
 cd /etc/nginx/sites-enabled
