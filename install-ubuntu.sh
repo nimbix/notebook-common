@@ -3,8 +3,9 @@
 set -x
 set -e
 
+export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get -y install python-pip nginx sudo && apt-get clean
+apt-get -y install python-pip nginx sudo curl && apt-get clean
 pip install --upgrade notebook
 
 cd /etc/nginx/sites-enabled
