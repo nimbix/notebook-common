@@ -57,7 +57,7 @@ server {
 	ssl_prefer_server_ciphers on;
 
         # Proxy calls to a locally running IPython server
-	location / {
+	location /notebook/ {
 	 	proxy_pass http://localhost:8888;
 		proxy_http_version 1.1;
 		proxy_set_header Upgrade $http_upgrade;
