@@ -18,4 +18,4 @@ cd /usr/local/bin
 curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/master/nimbix_notebook
 chmod 555 /usr/local/bin/nimbix_notebook
 
-echo "https://%PUBLICADDR%/notebook/" >/etc/NAE/url.txt
+echo "https://%PUBLICADDR%/" >/etc/NAE/url.txt
