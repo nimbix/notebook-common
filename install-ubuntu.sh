@@ -4,7 +4,7 @@ set -x
 set -e
 
 apt-get update
-apt-get -y install python-pip nginx sudo
+apt-get -y install python-pip nginx sudo && apt-get clean
 pip install --upgrade notebook
 
 cd /etc/nginx/sites-enabled
