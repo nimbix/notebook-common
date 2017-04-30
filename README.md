@@ -9,6 +9,8 @@ ADD https://raw.githubusercontent.com/nimbix/notebook-common/master/install-ubun
 RUN bash /tmp/install-ubuntu.sh && rm -f /tmp/install-ubuntu.sh
 ```
 
+To install Python 3 notebooks pass the single argument "3" to the install script above.
+
 # Executing a Jupyter Notebook
 
 ## Example With activation script
