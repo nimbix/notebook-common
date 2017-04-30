@@ -2,7 +2,7 @@
 
 set -e
 
-for i in $@; do
+while [ -n "$1" ]; do
     case $1 in
         -r)
             shift
