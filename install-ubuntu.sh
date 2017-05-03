@@ -15,6 +15,7 @@ else
     pip install --upgrade pip
     pip install --upgrade notebook
 fi
+apt-get clean
 
 cd /etc/nginx/sites-enabled
 curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/master/conf/default
