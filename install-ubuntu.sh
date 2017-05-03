@@ -28,3 +28,8 @@ chmod 555 /usr/local/bin/nimbix_notebook
 
 mkdir -p /etc/NAE
 echo "https://%PUBLICADDR%/" >/etc/NAE/url.txt
+
+# for JARVICE emulation
+mkdir -p /etc/JARVICE && cd /etc/JARVICE
+curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/master/conf/htpasswd
+
