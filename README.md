@@ -33,8 +33,10 @@ Once started, the notebook may be accessed via HTTPS remotely on port 443; usern
 ## Example starting notebook on local machine
 
 ```
-docker run --rm -h JARVICE -p 8883:443 *mycontainer* /usr/lib/JARVICE/tools/sbin/init /usr/local/bin/nimbix_notebook
+docker run --rm -h JARVICE -p 8883:443 mycontainer /usr/lib/JARVICE/tools/sbin/init /usr/local/bin/nimbix_notebook
 ```
+
+(Replace ```mycontainer``` with the name of the Docker image you built locally.)
 
 ## Connecting to local notebook
 To connect to the above example container running the notebook, open a browser and browse to [https://localhost:8443](https://localhost:8443).  When prompted, enter username **nimbix** and password **jarvice** (all lowercase).  Note that when deployed in the Nimbix Cloud the password is replaced with a randomly generated on available from the portal.
