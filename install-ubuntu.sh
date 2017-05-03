@@ -9,11 +9,11 @@ apt-get -y install nginx sudo curl libzmq-dev
 if [ "$1" = "3" ]; then
     apt-get -y install python3-pip
     pip3 install --upgrade pip
-    pip3 install --upgrade notebook
+    pip3 install --upgrade packaging notebook
 else
     apt-get -y install python-pip
     pip install --upgrade pip
-    pip install --upgrade notebook
+    pip install --upgrade packaging notebook
 fi
 apt-get clean
 
