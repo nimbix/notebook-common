@@ -4,7 +4,8 @@ set -x
 set -e
 
 yum update -y
-yum install -y nginx sudo curl zeromq-devel
+yum groupinstall -y "Development Tools"
+yum install -y nginx sudo curl zeromq-devel python-devel
 if [ "$1" = "3" ]; then
     yum install -y python3-pip
     pip3 install --upgrade pip
