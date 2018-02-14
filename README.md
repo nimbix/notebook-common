@@ -9,6 +9,13 @@ ADD https://raw.githubusercontent.com/nimbix/notebook-common/master/install-ubun
 RUN bash /tmp/install-ubuntu.sh && rm -f /tmp/install-ubuntu.sh
 ```
 
+To add Jupyter Notebook capabilities to your CentOS-based Docker image:
+
+```bash
+ADD https://raw.githubusercontent.com/nimbix/notebook-common/master/install-centos.sh /tmp/install-centos.sh
+RUN bash /tmp/install-centos.sh && rm -f /tmp/install-centos.sh
+```
+
 To install Python 3 notebooks pass the single argument "3" to the install script above.
 
 # Executing a Jupyter Notebook
