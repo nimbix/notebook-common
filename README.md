@@ -2,6 +2,8 @@
 Tools to add authenticated Jupyter Notebooks to images
 
 # Adding Jupyter Notebook to your image
+
+ 
 To add Jupyter Notebook capabilities to your Ubuntu-based Docker image:
 
 ```bash
@@ -17,6 +19,9 @@ RUN bash /tmp/install-centos.sh && rm -f /tmp/install-centos.sh
 ```
 
 To install Python 3 notebooks pass the single argument "3" to the install script above.
+
+
+_N.B. The Dockerfile for the image should contain the prerequisite [Nimbix image-common](https://github.com/nimbix/image-common)_
 
 # Executing a Jupyter Notebook
 
