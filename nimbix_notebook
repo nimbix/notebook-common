@@ -57,5 +57,5 @@ done
 
 cd /data
 sudo /usr/sbin/nginx
-exec jupyter notebook --no-browser --NotebookApp.token=""
+exec jupyter notebook --ip=127.0.0.1 --no-browser --NotebookApp.token=""
 
