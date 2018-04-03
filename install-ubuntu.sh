@@ -47,12 +47,12 @@ fi
 apt-get clean
 
 cd /etc/nginx/sites-enabled
-curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/master/conf/default
-curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/master/conf/notebook-site
+curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/testing/conf/default
+curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/testing/conf/notebook-site
 cd /etc/nginx/conf.d
-curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/master/conf/httpredirect.conf
+curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/testing/conf/httpredirect.conf
 cd /usr/local/bin
-curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/master/nimbix_notebook
+curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/testing/nimbix_notebook
 chmod 555 /usr/local/bin/nimbix_notebook
 
 mkdir -p /etc/NAE
@@ -60,5 +60,5 @@ echo "https://%PUBLICADDR%/" >/etc/NAE/url.txt
 
 # for JARVICE emulation
 mkdir -p /etc/JARVICE && cd /etc/JARVICE
-curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/master/conf/htpasswd
+curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/testing/conf/htpasswd
 
