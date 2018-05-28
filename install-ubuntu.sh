@@ -42,6 +42,7 @@ if [ "$1" = "3" ]; then
 else
     apt-get -y install python-pip
 #    pip install --upgrade pip
+    pip install -y 'ipython<6'
     pip install --upgrade packaging appdirs notebook
 fi
 apt-get clean
