@@ -34,14 +34,15 @@ set -e
 
 yum update -y
 yum groupinstall -y "Development Tools"
-yum install -y nginx sudo curl zeromq-devel python-devel
+#yum install -y nginx sudo curl zeromq-devel python-devel
+yum install -y nginx sudo curl python-devel
 if [ "$1" = "3" ]; then
     yum install -y python3-pip
 #    pip3 install --upgrade pip
     pip3 install --upgrade packaging appdirs notebook
 else
     yum install -y python-pip
-    pip install 'ipython<6' 'Tornado<5' packaging appdirs notebook
+    pip install 'ipython<6' packaging appdirs notebook
 fi
 yum clean all
 

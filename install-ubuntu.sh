@@ -34,6 +34,7 @@ set -e
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
+#apt-get -y install nginx sudo curl libzmq-dev
 apt-get -y install nginx sudo curl libzmq-dev
 if [ "$1" = "3" ]; then
     apt-get -y install python3-pip
@@ -41,7 +42,7 @@ if [ "$1" = "3" ]; then
     pip3 install --upgrade packaging appdirs notebook
 else
     apt-get -y install python-pip
-    pip install 'ipython<6' 'Tornado<5' packaging appdirs notebook
+    pip install 'ipython<6' packaging appdirs notebook
 fi
 apt-get clean
 
