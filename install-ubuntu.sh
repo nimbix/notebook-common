@@ -41,7 +41,7 @@ if [ "$1" = "3" ]; then
     pip3 install --upgrade packaging appdirs notebook
 else
     apt-get -y install python-pip
-    pip install 'ipython<6' packaging appdirs notebook
+    pip install 'ipython<6' 'Tornado<5' packaging appdirs notebook
 fi
 apt-get clean
 
