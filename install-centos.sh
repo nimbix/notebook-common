@@ -40,7 +40,7 @@ if [ "$1" = "3" ]; then
 #    pip3 install --upgrade pip
     pip3 install --upgrade packaging appdirs notebook
 else
-    apt-get -y install python-pip
+    yum install -y python-pip
     pip install 'ipython<6' packaging appdirs notebook
 fi
 yum clean all
