@@ -1,8 +1,10 @@
 # notebook-common
-Tools to add authenticated Jupyter Notebooks to images
+Tools to add authenticated Jupyter Notebooks to images for CentOS 7+ and Ubuntu 16+
 
 # Adding Jupyter Notebook to your image
 
+**Note: updates to packages needed to comprise the notebook-common offering and the dependency issues arising mean that 
+Ubuntu Trusty and CentOS 6 are no longer supported**
  
 To add Jupyter Notebook capabilities to your Ubuntu-based Docker image:
 
