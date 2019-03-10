@@ -35,14 +35,22 @@ set -e
 #yum update -y
 yum groupinstall -y "Development Tools"
 yum install -y nginx sudo curl python-devel
+
+# Python 3, must choose python 3.4 or 3.6, defaulting here to 3.4
 if [[ "$1" = "3" ]]; then
-    yum install -y python3-pip
+    yum install -y python34-pip
+    python3 -m pip install --upgrade pip
     pip3 install --upgrade packaging appdirs notebook
+#    python3 -m pip install --upgrade pip
+#    python3 -m pip install jupyter
 else
-#    yum install -y python-pip
-#    pip install 'ipython<6' packaging appdirs notebook
-    python -m pip install --upgrade pip
-    python -m pip install jupyter
+    yum install -y python2-pip
+        python -m pip install --upgrade pip
+    pip install 'ipython<6' packaging appdirs notebook
+#    python2 -m pip install ipython==5.7 --user
+#    python2 -m pip install ipykernel==4.10 --user
+#    python -m pip install --upgrade pip
+#    python -m pip install jupyter
 fi
 yum clean all
 
