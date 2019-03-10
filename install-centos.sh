@@ -32,15 +32,17 @@
 set -x
 set -e
 
-yum update -y
+#yum update -y
 yum groupinstall -y "Development Tools"
 yum install -y nginx sudo curl python-devel
-if [ "$1" = "3" ]; then
+if [[ "$1" = "3" ]]; then
     yum install -y python3-pip
     pip3 install --upgrade packaging appdirs notebook
 else
-    yum install -y python-pip
-    pip install 'ipython<6' packaging appdirs notebook
+#    yum install -y python-pip
+#    pip install 'ipython<6' packaging appdirs notebook
+    python -m pip install --upgrade pip
+    python -m pip install jupyter
 fi
 yum clean all
 
