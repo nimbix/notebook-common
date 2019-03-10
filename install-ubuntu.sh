@@ -34,13 +34,15 @@ set -e
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get -y install nginx sudo curl
-if [ "$1" = "3" ]; then
+apt-get -y install nginx sudo curl libzmq-dev
+if [[ "$1" = "3" ]]; then
     apt-get -y install python3-pip
+    pip3 install --upgrade pip
     pip3 install --upgrade packaging appdirs notebook
 else
     apt-get -y install python-pip
-    pip install 'ipython<6' packaging appdirs notebook
+    pip install --upgrade pip
+    pip install --upgrade packaging appdirs notebook
 fi
 apt-get clean
 

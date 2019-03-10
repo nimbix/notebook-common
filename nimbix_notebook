@@ -31,7 +31,7 @@
 
 set -e
 
-while [ -n "$1" ]; do
+while [[ -n "$1" ]]; do
     case $1 in
         -r)
             shift
@@ -51,11 +51,10 @@ while [ -n "$1" ]; do
     shift
 done
 
-[ -n "$REQUIREMENTS" ] && sudo pip install -r "$REQUIREMENTS"
+[[ -n "$REQUIREMENTS" ]] && sudo pip install -r "$REQUIREMENTS"
 
-[ -n "$SCRIPT" ] && source "$SCRIPT"
+[[ -n "$SCRIPT" ]] && source "$SCRIPT"
 
 cd /data
 sudo /usr/sbin/nginx
 exec jupyter notebook --ip=127.0.0.1 --no-browser --NotebookApp.token=""
-
