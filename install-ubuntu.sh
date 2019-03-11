@@ -34,8 +34,8 @@ set -e
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-#apt-get -y install nginx sudo curl libzmq-dev
 apt-get -y install nginx sudo curl
+
 if [[ "$1" = "3" ]]; then
     apt-get -y install python3-pip
     python3 -m pip install --upgrade pip setuptools
