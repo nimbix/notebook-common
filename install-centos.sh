@@ -40,11 +40,11 @@ yum install -y nginx sudo curl python-devel zeromq-devel
 if [[ "$1" = "3" ]]; then
     yum install -y python36-pip
     python36 -m pip install --upgrade pip setuptools
-    pip3 install --upgrade packaging appdirs notebook
+    pip3 install --upgrade packaging appdirs jupyter
 else
     yum install -y python2-pip
     python -m pip install --upgrade pip setuptools
-    pip install packaging appdirs notebook
+    pip install packaging appdirs jupyter
 fi
 yum clean all
 
