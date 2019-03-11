@@ -32,15 +32,19 @@
 set -x
 set -e
 
-yum update -y
+#yum update -y
 yum groupinstall -y "Development Tools"
-yum install -y nginx sudo curl python-devel
-if [ "$1" = "3" ]; then
-    yum install -y python3-pip
-    pip3 install --upgrade packaging appdirs notebook
+yum install -y nginx sudo curl python-devel zeromq-devel
+
+# Python 3, must choose python 3.4 or 3.6, defaulting here to 3.6
+if [[ "$1" = "3" ]]; then
+    yum install -y python36-pip
+    python36 -m pip install --upgrade pip setuptools
+    pip3 install --upgrade packaging appdirs jupyter
 else
-    yum install -y python-pip
-    pip install 'ipython<6' packaging appdirs notebook
+    yum install -y python2-pip
+    python -m pip install --upgrade pip setuptools
+    pip install packaging appdirs jupyter
 fi
 yum clean all
 
