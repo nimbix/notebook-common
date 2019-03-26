@@ -32,18 +32,12 @@
 set -x
 set -e
 
-export DEBIAN_FRONTEND=noninteractive
-apt-get update
-apt-get -y install curl redir
-chmod 04555 /usr/bin/redir
-
-while [[ -n "$1" ]]; do
-    case $1 in
-        -b)
-            shift
-            BRANCH="$1"
+while getopts "b:p" opt; do
+    case ${opt} in
+        b)
+            BRANCH="${OPTARG}"
             ;;
-        -p)
+        p)
             PYTHON="3"
             ;;
         *)
@@ -53,8 +47,12 @@ while [[ -n "$1" ]]; do
             exit 1
             ;;
     esac
-    shift
 done
+
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+apt-get -y install curl redir
+chmod 04555 /usr/bin/redir
 
 if [[ "${PYTHON}" = "3" ]]; then
     apt-get -y install python3-pip
