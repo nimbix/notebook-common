@@ -41,23 +41,39 @@ while [[ -n "$1" ]]; do
             shift
             SCRIPT="$1"
             ;;
+        -c)
+            shift
+            CONDA="$1"
+            ;;
+        -p)
+            shift
+            PORT="$1"
+            ;;
         *)
-            echo "usage: $0 [-r <requirements-path>] [-s <script-path>]" >&2
+            echo "usage: $0 [-r <requirements-path>] [-s <script-path>] [-c <conda-environment>] [-p <user-port>]" >&2
+            echo "  use -c to activate anaconda environment" >&2
             echo "  use -r to specify a requirements.txt file for pip" >&2
             echo "  use -s to source an activation/environment script" >&2
+            echo "  use -p to specify user port for notebook" >&2
             exit 1
             ;;
     esac
     shift
 done
 
+[[ -z "${PORT}" ]] && PORT=8888
+
 # fix up path as pip installs in different locations per python revision
 export PATH=$PATH:/usr/local/bin
 
-[[ -n "$REQUIREMENTS" ]] && sudo pip install -r "$REQUIREMENTS"
+[[ -n "${CONDA}" ]] && conda activate "${CONDA}"
+
+[[ -n "$REQUIREMENTS" ]] && pip install --user -r "$REQUIREMENTS"
 
 [[ -n "$SCRIPT" ]] && source "$SCRIPT"
 
 cd /data
-sudo /usr/sbin/nginx
-exec jupyter notebook --ip=127.0.0.1 --no-browser --NotebookApp.token=""
+redir --laddr=0.0.0.0 --lport=443 --caddr=0.0.0.0 --cport=${PORT} &
+exec jupyter notebook --ip=127.0.0.1 --no-browser --port=${PORT} \
+    --certfile=/etc/JARVICE/cert.pem \
+    --NotebookApp.token=`cat /etc/JARVICE/random128.txt | cut -c 1-64`

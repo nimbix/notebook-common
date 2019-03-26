@@ -34,9 +34,30 @@ set -e
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get -y install nginx sudo curl
+apt-get -y install curl redir
+chmod 04555 /usr/bin/redir
 
-if [[ "$1" = "3" ]]; then
+while [[ -n "$1" ]]; do
+    case $1 in
+        -b)
+            shift
+            BRANCH="$1"
+            ;;
+        -p)
+            shift
+            PYTHON="3"
+            ;;
+        *)
+            echo "usage: $0 [-b <branch>] [-p <notebook-port>]" >&2
+            echo "  use -b to specify notebook common branch" >&2
+            echo "  use -p to specify to use python3" >&2
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+if [[ "${PYTHON}" = "3" ]]; then
     apt-get -y install python3-pip
     python3 -m pip install --upgrade pip setuptools
     pip install --upgrade packaging appdirs jupyter
@@ -47,19 +68,12 @@ else
 fi
 apt-get clean
 
-cd /etc/nginx/sites-enabled
-curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/master/conf/default
-curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/master/conf/notebook-site
-cd /etc/nginx/conf.d
-curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/master/conf/httpredirect.conf
+[[ -z ${BRANCH} ]] && BRANCH="master"
+
 cd /usr/local/bin
-curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/master/nimbix_notebook
+curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/${BRANCH}/nimbix_notebook
 chmod 555 /usr/local/bin/nimbix_notebook
 
 mkdir -p /etc/NAE
-echo "https://%PUBLICADDR%/" >/etc/NAE/url.txt
-
-# for JARVICE emulation
-mkdir -p /etc/JARVICE && cd /etc/JARVICE
-curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/master/conf/htpasswd
+echo "https://%PUBLICADDR%/?token=%RANDOM64%" >/etc/NAE/url.txt
 
