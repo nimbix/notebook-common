@@ -76,6 +76,7 @@ tar -xf *.tar.gz
 cd redir*
 make all
 cp redir /usr/bin
+chmod 04555 /usr/bin/redir
 cd
 rm -rf /tmp/build-redir
 yum groupremove -y "Development Tools"
