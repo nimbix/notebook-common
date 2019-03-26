@@ -74,6 +74,6 @@ export PATH=$PATH:/usr/local/bin
 
 cd /data
 redir --laddr=0.0.0.0 --lport=443 --caddr=0.0.0.0 --cport=${PORT} &
-exec jupyter notebook --ip=127.0.0.1 --no-browser --port=${PORT} \
+exec jupyter notebook --ip=0.0.0.0 --no-browser --port=${PORT} \
     --certfile=/etc/JARVICE/cert.pem \
     --NotebookApp.token=`cat /etc/JARVICE/random128.txt | cut -c 1-64`
