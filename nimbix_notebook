@@ -31,34 +31,34 @@
 
 set -e
 
-while [[ -n "$1" ]]; do
-    case $1 in
-        -r)
-            shift
-            REQUIREMENTS="$1"
+while getopts "r:s:c:p:l" opt; do
+    case ${opt} in
+        r)
+            REQUIREMENTS="${OPTARG}"
             ;;
-        -s)
-            shift
-            SCRIPT="$1"
+        s)
+            SCRIPT="${OPTARG}"
             ;;
-        -c)
-            shift
-            CONDA="$1"
+        c)
+            CONDA="${OPTARG}"
             ;;
-        -p)
-            shift
-            PORT="$1"
+        p)
+            PORT="${OPTARG}"
+            ;;
+        l)
+            LOCAL_TESTING=1
             ;;
         *)
-            echo "usage: $0 [-r <requirements-path>] [-s <script-path>] [-c <conda-environment>] [-p <user-port>]" >&2
+            echo "usage: $0 [-l]][-r <requirements-path>] [-s <script-path>]" >&2
+            echo "      [-c <conda-environment>] [-p <user-port>]" >&2
             echo "  use -c to activate anaconda environment" >&2
             echo "  use -r to specify a requirements.txt file for pip" >&2
             echo "  use -s to source an activation/environment script" >&2
             echo "  use -p to specify user port for notebook" >&2
+            echo "  use -l for local testing w/ Docker" >&2
             exit 1
             ;;
     esac
-    shift
 done
 
 [[ -z "${PORT}" ]] && PORT=8888
@@ -72,8 +72,16 @@ export PATH=$PATH:/usr/local/bin
 
 [[ -n "$SCRIPT" ]] && source "$SCRIPT"
 
-cd /data
 redir --laddr=0.0.0.0 --lport=443 --caddr=0.0.0.0 --cport=${PORT} &
-exec jupyter notebook --ip=0.0.0.0 --no-browser --port=${PORT} \
-    --certfile=/etc/JARVICE/cert.pem \
-    --NotebookApp.token=`cat /etc/JARVICE/random128.txt | cut -c 1-64`
+if [ ! -z "${LOCAL_TESTING}" ]; then
+    # Create non privileged user for local test
+    useradd -m -s /bin/bash nimbix
+    su - nimbix -c "jupyter notebook --ip=0.0.0.0 --no-browser \
+        --port=${PORT} --NotebookApp.token=''"
+else
+    cd /data
+    exec jupyter notebook --ip=0.0.0.0 --no-browser --port=${PORT} \
+        --certfile=/etc/JARVICE/cert.pem \
+        --NotebookApp.token=`cat /etc/JARVICE/random128.txt | cut -c 1-64`
+fi
+

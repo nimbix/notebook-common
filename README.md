@@ -1,5 +1,5 @@
 # notebook-common
-Tools to add authenticated Jupyter Notebooks to images for CentOS 7+ and Ubuntu 16+
+Tools to add authenticated Jupyter Notebooks to images for CentOS 7+ and Ubuntu 16.04+
 
 # Adding Jupyter Notebook to your image
 
@@ -20,10 +20,8 @@ ADD https://raw.githubusercontent.com/nimbix/notebook-common/master/install-cent
 RUN bash /tmp/install-centos.sh && rm -f /tmp/install-centos.sh
 ```
 
-To install Python 3 notebooks pass the single argument "3" to the install script above.
+To install Python 3 notebooks pass the single argument `-p` to the install script above.
 
-
-_N.B. The Dockerfile for the image should contain the prerequisite [Nimbix image-common](https://github.com/nimbix/image-common)_
 
 # Executing a Jupyter Notebook
 
@@ -36,22 +34,27 @@ _N.B. The Dockerfile for the image should contain the prerequisite [Nimbix image
 ## Example with requirements.txt
 
 ```
-/usr/local/bin/nimbix_notebook -r /home/nimbix/requirements.txt
+/usr/local/bin/nimbix_notebook -r ${HOME}/requirements.txt
+```
+
+## Example with Anaconda environment
+
+```
+/usr/local/bin/nimbix_notebook -c my-conda-env
 ```
 
 # Accessing the Jupyter Notebook
-Once started, the notebook may be accessed via HTTPS remotely on port 443; username is always **nimbix** and password is the password assigned to the job, which can be displayed in the portal.
+Once started, the notebook may be accessed by clicking on the running application on the JARVICE dashboard. Sessions are authenticated using randomly generated tokens.
 
 # Local testing
 
 ## Example starting notebook on local machine
 
 ```
-docker run --rm -h JARVICE -p 8443:443 mycontainer /usr/lib/JARVICE/tools/sbin/init /usr/local/bin/nimbix_notebook
+docker run --rm -h JARVICE -p 8443:443 mycontainer /usr/local/bin/nimbix_notebook -l
 ```
 
 (Replace ```mycontainer``` with the name of the Docker image you built locally.)
 
 ## Connecting to local notebook
-To connect to the above example container running the notebook, open a browser and browse to [https://localhost:8443](https://localhost:8443).  When prompted, enter username **nimbix** and password **jarvice** (all lowercase).  Note that when deployed in the Nimbix Cloud the password is replaced with a randomly generated on available from the portal.
-
+To connect to the above example container running the notebook, open a browser and browse to [http://localhost:8443](http://localhost:8443). Note: Local testing does not use https:// or password/token authentication.
