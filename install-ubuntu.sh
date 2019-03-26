@@ -44,7 +44,6 @@ while [[ -n "$1" ]]; do
             BRANCH="$1"
             ;;
         -p)
-            shift
             PYTHON="3"
             ;;
         *)
