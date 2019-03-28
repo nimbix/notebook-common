@@ -66,6 +66,12 @@ done
 # fix up path as pip installs in different locations per python revision
 export PATH=$PATH:/usr/local/bin
 
+#Check for Anaconda
+if [ -e /opt/conda/etc/profile.d/conda.sh ]; then
+    source /opt/conda/etc/profile.d/conda.sh
+    conda activate base
+fi
+
 [[ -n "${CONDA}" ]] && conda activate "${CONDA}"
 
 [[ -n "$REQUIREMENTS" ]] && pip install --user -r "$REQUIREMENTS"
