@@ -6,22 +6,18 @@ Tools to add authenticated Jupyter Notebooks to images for CentOS 7+ and Ubuntu 
 **Note: updates to packages needed to comprise the notebook-common offering and the dependency issues arising mean that 
 Ubuntu Trusty and CentOS 6 are no longer supported**
  
-To add Jupyter Notebook capabilities to your Ubuntu-based Docker image:
+To add Jupyter Notebook capabilities to your Docker image:
 
 ```bash
-ADD https://raw.githubusercontent.com/nimbix/notebook-common/master/install-ubuntu.sh /tmp/install-ubuntu.sh
-RUN bash /tmp/install-ubuntu.sh && rm -f /tmp/install-ubuntu.sh
+ADD https://raw.githubusercontent.com/nimbix/notebook-common/${BRANCH:-master}/install-notebook-common /tmp/install-notebook-common
+RUN cat /tmp/install-notebook-common | su - -c 'sed "s|<SHELL>|${SHELL}|"' | su - -c '${SHELL} -s -- '"-b ${BRANCH:-master}" && rm /tmp/install-notebook-common
 ```
 
-To add Jupyter Notebook capabilities to your CentOS-based Docker image:
+To install Python 3 notebooks pass the single argument `-p`:
 
 ```bash
-ADD https://raw.githubusercontent.com/nimbix/notebook-common/master/install-centos.sh /tmp/install-centos.sh
-RUN bash /tmp/install-centos.sh && rm -f /tmp/install-centos.sh
+RUN cat /tmp/install-notebook-common | su - -c 'sed "s|<SHELL>|${SHELL}|"' | su - -c '${SHELL} -s -- '"-p -b ${BRANCH:-master}" && rm /tmp/install-notebook-common
 ```
-
-To install Python 3 notebooks pass the single argument `-p` to the install script above.
-
 
 # Executing a Jupyter Notebook
 
