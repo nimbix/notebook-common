@@ -71,5 +71,5 @@ fi
 cd /tmp
 curl -H 'Cache-Control: no-cache' \
     https://raw.githubusercontent.com/nimbix/notebook-common/${BRANCH}/install-${OSDIST}.sh \
-    | ${SHELL} -s -- -b ${BRANCH}
+    | su - -c '${SHELL} -s -- -b'"${BRANCH}"
 
