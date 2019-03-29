@@ -31,7 +31,7 @@
 
 set -x
 set -e
-echo args $@
+
 while getopts "b:p" opt; do
     case ${opt} in
         b)
