@@ -68,8 +68,7 @@ export PATH=$PATH:/usr/local/bin
 
 #Check for Anaconda
 if [ -e /opt/conda/etc/profile.d/conda.sh ]; then
-    source /opt/conda/etc/profile.d/conda.sh
-    conda activate base
+    CONDA_ENV="source /opt/conda/etc/profile.d/conda.sh && conda activate base"
 fi
 
 [[ -n "${CONDA}" ]] && conda activate "${CONDA}"
@@ -82,13 +81,15 @@ redir --laddr=0.0.0.0 --lport=443 --caddr=0.0.0.0 --cport=${PORT} &
 if [ ! -z "${LOCAL_TESTING}" ]; then
     # Create non privileged user for local test
     # Check if using alpine
-    if [ "$(which useradd)" -eq "0" ]; then
+    which useradd
+    ret=$?
+    if [ "${ret}" -eq "0" ]; then
         useradd -m -s /bin/bash nimbix
     else
         adduser -D -s /bin/ash nimbix
     fi
-    su - nimbix -c "jupyter notebook --ip=0.0.0.0 --no-browser \
-        --port=${PORT} --NotebookApp.token=''"
+    su - nimbix -c "eval ${CONDA_ENV} && jupyter notebook --ip=0.0.0.0 \
+        --no-browser --port=${PORT} --NotebookApp.token=''"
 else
     cd /data
     exec jupyter notebook --ip=0.0.0.0 --no-browser --port=${PORT} \
