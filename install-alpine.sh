@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/ash
 #
 # Copyright (c) 2018, Nimbix, Inc.
 # All rights reserved.
@@ -49,26 +49,50 @@ while getopts "b:p" opt; do
     esac
 done
 
-export DEBIAN_FRONTEND=noninteractive
-apt-get update
-apt-get -y install curl redir
+apk update
+apk add build-base
+# Install redir
+REDIR_VERSION="v2.2.1"
+mkdir /tmp/build-redir
+cd /tmp/build-redir
+wget https://github.com/troglobit/redir/archive/${REDIR_VERSION}.tar.gz
+tar -xf *.tar.gz
+cd redir*
+make all
+cp redir /usr/bin
 chmod 04555 /usr/bin/redir
+cd
+rm -rf /tmp/build-redir
+# Install zmq
+ZMQ_VERSION="4.3.1"
+mkdir /tmp/build-zmq
+cd /tmp/build-zmq
+wget https://github.com/zeromq/libzmq/releases/download/v${ZMQ_VERSION}/zeromq-${ZMQ_VERSION}.tar.gz
+tar -xf *.tar.gz
+cd zeromq*
+./configure
+make install
+cd
+rm -rf /tmp/build-zmq
 
 if [[ "${PYTHON}" = "3" ]]; then
-    apt-get -y install python3-pip
+    apk add python3-dev
     python3 -m pip install --upgrade pip setuptools
     pip install --upgrade packaging appdirs jupyter
 else
-    apt-get -y install python-pip
+    apk add python2-dev py2-pip
     python -m pip install --upgrade pip setuptools
     pip install packaging appdirs jupyter
 fi
-apt-get clean
 
 [[ -z ${BRANCH} ]] && BRANCH="master"
 
+apk add curl
+
 cd /usr/local/bin
 curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/${BRANCH}/nimbix_notebook
+# Update shell for nimbix_notebook
+sed -i 's/<SHELL>/ash/' /usr/local/bin/nimbix_notebook
 chmod 555 /usr/local/bin/nimbix_notebook
 
 mkdir -p /etc/NAE

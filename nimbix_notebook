@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/<SHELL>
 #
 # Copyright (c) 2018, Nimbix, Inc.
 # All rights reserved.
@@ -81,7 +81,12 @@ fi
 redir --laddr=0.0.0.0 --lport=443 --caddr=0.0.0.0 --cport=${PORT} &
 if [ ! -z "${LOCAL_TESTING}" ]; then
     # Create non privileged user for local test
-    useradd -m -s /bin/bash nimbix
+    # Check if using alpine
+    if [ "$(which useradd)" -eq "0" ]; then
+        useradd -m -s /bin/bash nimbix
+    else
+        adduser -D -s /bin/ash nimbix
+    fi
     su - nimbix -c "jupyter notebook --ip=0.0.0.0 --no-browser \
         --port=${PORT} --NotebookApp.token=''"
 else

@@ -49,37 +49,21 @@ while getopts "b:p" opt; do
     esac
 done
 
-#yum update -y
-yum groupinstall -y "Development Tools"
-yum install -y wget curl python-devel zeromq-devel
-yum install -y epel-release
-yum makecache
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+apt-get -y install curl redir
+chmod 04555 /usr/bin/redir
 
-# Python 3, must choose python 3.4 or 3.6, defaulting here to 3.6
 if [[ "${PYTHON}" = "3" ]]; then
-    yum install -y python36-pip
-    python36 -m pip install --upgrade pip setuptools
-    pip3 install --upgrade packaging appdirs jupyter
+    apt-get -y install python3-pip
+    python3 -m pip install --upgrade pip setuptools
+    pip install --upgrade packaging appdirs jupyter
 else
-    yum install -y python2-pip
+    apt-get -y install python-pip
     python -m pip install --upgrade pip setuptools
     pip install packaging appdirs jupyter
 fi
-yum clean all
-
-# Install redir
-REDIR_VERSION="v2.2.1"
-mkdir /tmp/build-redir
-cd /tmp/build-redir
-wget https://github.com/troglobit/redir/archive/${REDIR_VERSION}.tar.gz
-tar -xf *.tar.gz
-cd redir*
-make all
-cp redir /usr/bin
-chmod 04555 /usr/bin/redir
-cd
-rm -rf /tmp/build-redir
-yum groupremove -y "Development Tools"
+apt-get clean
 
 [[ -z ${BRANCH} ]] && BRANCH="master"
 
