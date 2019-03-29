@@ -57,7 +57,7 @@ elif cat /etc/*release | grep Debian; then
 elif cat /etc/*release | grep Alpine; then
     OSDIST=alpine
     apk update && apk add curl
-elif cat /etc/*release | grep cenots; then
+elif cat /etc/*release | grep centos; then
     OSDIST=centos
     yum install -y curl
 else
