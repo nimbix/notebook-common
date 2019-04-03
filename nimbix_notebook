@@ -69,11 +69,14 @@ export PATH=$PATH:/usr/local/bin
 #Check for Anaconda
 if [ -e /opt/conda/etc/profile.d/conda.sh ]; then
     CONDA_ENV="source /opt/conda/etc/profile.d/conda.sh && conda activate base"
+elif [ -e /etc/profile.d/conda.sh ]; then
+    CONDA_ENV="source /etc/profile.d/conda.sh && conda activate base"
 fi
+[[ -n "${CONDA_ENV}" ]] && eval $CONDA_ENV
 
 [[ -n "${CONDA}" ]] && conda activate "${CONDA}"
 
-[[ -n "$REQUIREMENTS" ]] && pip install --user -r "$REQUIREMENTS"
+[[ -n "$REQUIREMENTS" ]] && sudo -H pip install --user -r "$REQUIREMENTS"
 
 [[ -n "$SCRIPT" ]] && source "$SCRIPT"
 

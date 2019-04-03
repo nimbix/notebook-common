@@ -1,6 +1,6 @@
 #!/bin/ash
 #
-# Copyright (c) 2018, Nimbix, Inc.
+# Copyright (c) 2019, Nimbix, Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@
 set -x
 set -e
 
-while getopts "b:p" opt; do
+while getopts "b:pc" opt; do
     case ${opt} in
         b)
             BRANCH="${OPTARG}"
@@ -40,10 +40,15 @@ while getopts "b:p" opt; do
         p)
             PYTHON="3"
             ;;
+        c)
+            PYTHON="c"
+            ;;
         *)
-            echo "usage: $0 [-b <branch>] [-p <notebook-port>]" >&2
+            echo "usage: $0 [-b <branch>] [-p|-c]" >&2
             echo "  use -b to specify notebook common branch" >&2
             echo "  use -p to specify to use python3" >&2
+            echo "  use -c to specify to use conda (must have conda installed)" >&2
+            echo "default is to use python 2" >&2
             exit 1
             ;;
     esac
@@ -79,6 +84,8 @@ if [[ "${PYTHON}" = "3" ]]; then
     apk add python3-dev
     python3 -m pip install --upgrade pip setuptools
     pip install --upgrade packaging appdirs jupyter
+elif [[ "${PYTHON}" = "p" ]]; then
+    conda install -y jupyter
 else
     apk add python2-dev py2-pip
     python -m pip install --upgrade pip setuptools

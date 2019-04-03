@@ -1,6 +1,6 @@
 #!<SHELL>
 #
-# Copyright (c) 2018, Nimbix, Inc.
+# Copyright (c) 2019, Nimbix, Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 
 set -e
 
-while getopts "b:p" opt; do
+while getopts "b:pc" opt; do
     case ${opt} in
         b)
             BRANCH="${OPTARG}"
@@ -39,10 +39,15 @@ while getopts "b:p" opt; do
         p)
             PYTHON="-p "
             ;;
+        c)
+            PYTHON="-a "
+            ;;
         *)
-            echo "usage: $0 [-b <branch>] [-p <notebook-port>]" >&2
+            echo "usage: $0 [-b <branch>] [-p|-c]" >&2
             echo "  use -b to specify notebook common branch" >&2
             echo "  use -p to specify to use python3" >&2
+            echo "  use -c to specify to use conda (must have conda installed)" >&2
+            echo "default is to use python 2" >&2
             exit 1
             ;;
     esac
