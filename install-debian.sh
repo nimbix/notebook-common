@@ -44,7 +44,7 @@ while getopts "b:pc" opt; do
             PYTHON="c"
             ;;
         *)
-            echo "usage: $0 [-b <branch>] [-p <notebook-port>]" >&2
+            echo "usage: $0 [-b <branch>] [-p|-c]" >&2
             echo "  use -b to specify notebook common branch" >&2
             echo "  use -p to specify to use python3" >&2
             echo "  use -c to specify to use conda (must have conda installed)" >&2
@@ -63,7 +63,7 @@ if [[ "${PYTHON}" = "3" ]]; then
     apt-get -y install python3-pip
     python3 -m pip install --upgrade pip setuptools
     pip install --upgrade packaging appdirs jupyter
-elif [[ "${PYTHON}" = "p" ]]; then
+elif [[ "${PYTHON}" = "c" ]]; then
     conda install -y jupyter
 else
     apt-get -y install python-pip

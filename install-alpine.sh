@@ -84,7 +84,7 @@ if [[ "${PYTHON}" = "3" ]]; then
     apk add python3-dev
     python3 -m pip install --upgrade pip setuptools
     pip install --upgrade packaging appdirs jupyter
-elif [[ "${PYTHON}" = "p" ]]; then
+elif [[ "${PYTHON}" = "c" ]]; then
     conda install -y jupyter
 else
     apk add python2-dev py2-pip
