@@ -40,7 +40,7 @@ while getopts "b:pc" opt; do
             PYTHON="-p "
             ;;
         c)
-            PYTHON="-a "
+            PYTHON="-c "
             ;;
         *)
             echo "usage: $0 [-b <branch>] [-p|-c]" >&2
