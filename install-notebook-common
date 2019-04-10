@@ -53,7 +53,7 @@ while getopts "b:3c" opt; do
     esac
 done
 
-# Install curl for distro to pull in distro-specific packages
+# Install curl for distro to pull in distro-specific installer scripts
 if cat /etc/*release | grep -E 'Ubuntu|Debian'; then
     OSDIST=debian
     apt-get -y update && apt-get -y install curl
@@ -64,7 +64,6 @@ else
     echo "ERROR: unsupported image"
     exit 1
 fi
-
 
 [[ -z ${BRANCH} ]] && BRANCH="master"
 

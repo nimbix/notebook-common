@@ -61,6 +61,7 @@ while getopts "r:s:c:p:l" opt; do
     esac
 done
 
+# default internal Jupyter port is 8888 unless overridden
 [[ -z "${PORT}" ]] && PORT=8888
 
 # fix up path as pip installs in different locations per python revision
@@ -72,7 +73,8 @@ if [[ -e /opt/conda/etc/profile.d/conda.sh ]]; then
 elif [[ -e /etc/profile.d/conda.sh ]]; then
     CONDA_ENV="source /etc/profile.d/conda.sh && conda activate base"
 fi
-[[ -n "${CONDA_ENV}" ]] && eval $CONDA_ENV
+
+[[ -n "${CONDA_ENV}" ]] && eval ${CONDA_ENV}
 
 [[ -n "${CONDA}" ]] && conda activate "${CONDA}"
 
@@ -80,10 +82,11 @@ fi
 
 [[ -n "$SCRIPT" ]] && source "$SCRIPT"
 
+# Start the redir daemon, redirecting the external port to the Jupyter listener
 redir --laddr=0.0.0.0 --lport=443 --caddr=0.0.0.0 --cport=${PORT} &
 
 if [[ ! -z "${LOCAL_TESTING}" ]]; then
-    # Create non privileged user for local test
+    # Create non-privileged user for local test
     useradd -m -s /bin/bash nimbix
     su - nimbix -c "eval ${CONDA_ENV} && jupyter notebook --ip=0.0.0.0 \
         --no-browser --port=${PORT} --NotebookApp.token=''"
