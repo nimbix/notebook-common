@@ -32,12 +32,12 @@
 set -x
 set -e
 
-while getopts "b:pc" opt; do
+while getopts "b:3c" opt; do
     case ${opt} in
         b)
             BRANCH="${OPTARG}"
             ;;
-        p)
+        3)
             PYTHON="3"
             ;;
         c)
@@ -46,9 +46,9 @@ while getopts "b:pc" opt; do
         *)
             echo "usage: $0 [-b <branch>] [-p|-c]" >&2
             echo "  use -b to specify notebook common branch" >&2
-            echo "  use -p to specify to use python3" >&2
+            echo "  use -3 to specify to use python3" >&2
             echo "  use -c to specify to use conda (must have conda installed)" >&2
-            echo "default is to use python 2" >&2
+            echo "default is to use python2" >&2
             exit 1
             ;;
     esac
@@ -92,10 +92,8 @@ yum groupremove -y "Development Tools"
 
 cd /usr/local/bin
 curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/${BRANCH}/nimbix_notebook
-# Update shell for nimbix_notebook
-sed -i 's/<SHELL>/bash/' /usr/local/bin/nimbix_notebook
+
 chmod 555 /usr/local/bin/nimbix_notebook
 
 mkdir -p /etc/NAE
 echo "https://%PUBLICADDR%/?token=%RANDOM64%" >/etc/NAE/url.txt
-

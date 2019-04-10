@@ -40,7 +40,8 @@ RUN cat /tmp/install-notebook-common | su - -c 'sed "s|<SHELL>|${SHELL}|"' | su 
 ```
 
 # Accessing the Jupyter Notebook
-Once started, the notebook may be accessed by clicking on the running application on the JARVICE dashboard. Sessions are authenticated using randomly generated tokens.
+Once started, the notebook may be accessed by clicking on the running application on the JARVICE dashboard. 
+Sessions are authenticated using randomly generated tokens.
 
 # Local testing
 
@@ -53,4 +54,5 @@ docker run --rm -h JARVICE -p 8443:443 mycontainer /usr/local/bin/nimbix_noteboo
 (Replace ```mycontainer``` with the name of the Docker image you built locally.)
 
 ## Connecting to local notebook
-To connect to the above example container running the notebook, open a browser and browse to [http://localhost:8443](http://localhost:8443). Note: Local testing does not use https:// or password/token authentication.
+To connect to the above example container running the notebook, open a browser and browse to [http://localhost:8443](http://localhost:8443). 
+Note: Local testing does not use https:// or password/token authentication.

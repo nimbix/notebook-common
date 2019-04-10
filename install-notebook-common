@@ -1,4 +1,4 @@
-#!<SHELL>
+#!/bin/bash
 #
 # Copyright (c) 2019, Nimbix, Inc.
 # All rights reserved.
@@ -31,37 +31,32 @@
 
 set -e
 
-while getopts "b:pc" opt; do
+while getopts "b:3c" opt; do
     case ${opt} in
         b)
             BRANCH="${OPTARG}"
             ;;
-        p)
-            PYTHON="-p "
+        3)
+            PYTHON="-3 "
             ;;
         c)
             PYTHON="-c "
             ;;
         *)
             echo "usage: $0 [-b <branch>] [-p|-c]" >&2
-            echo "  use -b to specify notebook common branch" >&2
-            echo "  use -p to specify to use python3" >&2
+            echo "  use -b to specify notebook-common branch" >&2
+            echo "  use -3 to specify to use python3" >&2
             echo "  use -c to specify to use conda (must have conda installed)" >&2
-            echo "default is to use python 2" >&2
+            echo "default is to use python2" >&2
             exit 1
             ;;
     esac
 done
 
-if cat /etc/*release | grep Ubuntu; then
+# Install curl for distro to pull in distro-specific packages
+if cat /etc/*release | grep -E 'Ubuntu|Debian'; then
     OSDIST=debian
     apt-get -y update && apt-get -y install curl
-elif cat /etc/*release | grep Debian; then
-    OSDIST=debian
-    apt-get -y update && apt-get -y install curl
-elif cat /etc/*release | grep Alpine; then
-    OSDIST=alpine
-    apk update && apk add curl
 elif cat /etc/*release | grep centos; then
     OSDIST=centos
     yum install -y curl
@@ -76,5 +71,5 @@ fi
 cd /tmp
 curl -H 'Cache-Control: no-cache' \
     https://raw.githubusercontent.com/nimbix/notebook-common/${BRANCH}/install-${OSDIST}.sh \
-    | su - -c '${SHELL} -s -- '"${PYTHON}-b${BRANCH}"
+    | su - -c '/bin/bash -s -- '"${PYTHON}-b${BRANCH}"
 

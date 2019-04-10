@@ -1,6 +1,6 @@
-#!/bin/<SHELL>
+#!/bin/bash
 #
-# Copyright (c) 2018, Nimbix, Inc.
+# Copyright (c) 2019, Nimbix, Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -67,9 +67,9 @@ done
 export PATH=$PATH:/usr/local/bin
 
 #Check for Anaconda
-if [ -e /opt/conda/etc/profile.d/conda.sh ]; then
+if [[ -e /opt/conda/etc/profile.d/conda.sh ]]; then
     CONDA_ENV="source /opt/conda/etc/profile.d/conda.sh && conda activate base"
-elif [ -e /etc/profile.d/conda.sh ]; then
+elif [[ -e /etc/profile.d/conda.sh ]]; then
     CONDA_ENV="source /etc/profile.d/conda.sh && conda activate base"
 fi
 [[ -n "${CONDA_ENV}" ]] && eval $CONDA_ENV
@@ -81,16 +81,10 @@ fi
 [[ -n "$SCRIPT" ]] && source "$SCRIPT"
 
 redir --laddr=0.0.0.0 --lport=443 --caddr=0.0.0.0 --cport=${PORT} &
-if [ ! -z "${LOCAL_TESTING}" ]; then
+
+if [[ ! -z "${LOCAL_TESTING}" ]]; then
     # Create non privileged user for local test
-    # Check if using alpine
-    which useradd
-    ret=$?
-    if [ "${ret}" -eq "0" ]; then
-        useradd -m -s /bin/bash nimbix
-    else
-        adduser -D -s /bin/ash nimbix
-    fi
+    useradd -m -s /bin/bash nimbix
     su - nimbix -c "eval ${CONDA_ENV} && jupyter notebook --ip=0.0.0.0 \
         --no-browser --port=${PORT} --NotebookApp.token=''"
 else
