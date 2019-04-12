@@ -87,7 +87,7 @@ redir --laddr=0.0.0.0 --lport=443 --caddr=0.0.0.0 --cport=${PORT} &
 
 if [[ ! -z "${LOCAL_TESTING}" ]]; then
     # Create non-privileged user for local test
-    useradd -m -s /bin/bash nimbix || /bin/true
+    useradd -m -s /bin/bash nimbix 2>&1 || /bin/true
     su - nimbix -c "eval ${CONDA_ENV} && jupyter notebook --ip=0.0.0.0 \
         --no-browser --port=${PORT} --NotebookApp.token=''"
 else

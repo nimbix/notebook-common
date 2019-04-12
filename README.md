@@ -10,13 +10,13 @@ To add Jupyter Notebook capabilities to your Docker image:
 
 ```bash
 ADD https://raw.githubusercontent.com/nimbix/notebook-common/${BRANCH:-master}/install-notebook-common /tmp/install-notebook-common
-RUN cat /tmp/install-notebook-common | su - -c 'sed "s|<SHELL>|${SHELL}|"' | su - -c '${SHELL} -s -- '"-b ${BRANCH:-master}" && rm /tmp/install-notebook-common
+RUN bash /tmp/install-notebook-common -b "$BRANCH" -c && rm /tmp/install-notebook-common
 ```
 
-To install Python 3 notebooks pass the single argument `-p`:
+To install Python 3 notebooks pass the single argument `-3`:
 
 ```bash
-RUN cat /tmp/install-notebook-common | su - -c 'sed "s|<SHELL>|${SHELL}|"' | su - -c '${SHELL} -s -- '"-p -b ${BRANCH:-master}" && rm /tmp/install-notebook-common
+RUN bash /tmp/install-notebook-common -b "$BRANCH" -c -3 && rm /tmp/install-notebook-common
 ```
 
 # Executing a Jupyter Notebook
