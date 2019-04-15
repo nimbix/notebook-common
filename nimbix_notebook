@@ -78,8 +78,7 @@ fi
 
 [[ -n "${CONDA}" ]] && conda activate "${CONDA}"
 
-#[[ -n "$REQUIREMENTS" ]] && sudo -H pip install --user -r "$REQUIREMENTS"
-[[ -n "$REQUIREMENTS" ]] && sudo pip install -r "$REQUIREMENTS"
+[[ -n "$REQUIREMENTS" ]] && sudo pip install -r "$REQUIREMENTS" || sudo /usr/local/bin/pip install -r "$REQUIREMENTS"
 
 [[ -n "$SCRIPT" ]] && source "$SCRIPT"
 
@@ -97,4 +96,3 @@ else
         --certfile=/etc/JARVICE/cert.pem \
         --NotebookApp.token=`cat /etc/JARVICE/random128.txt | cut -c 1-64`
 fi
-
