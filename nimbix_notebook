@@ -65,7 +65,7 @@ done
 [[ -z "${PORT}" ]] && PORT=8888
 
 # fix up path as pip installs in different locations per python revision
-export PATH=$PATH:/usr/local/bin
+export PATH=$PATH:/usr/local/bin:/root/.local/bin
 
 #Check for Anaconda
 if [[ -e /opt/conda/etc/profile.d/conda.sh ]]; then
