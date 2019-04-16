@@ -78,7 +78,11 @@ fi
 
 [[ -n "${CONDA}" ]] && conda activate "${CONDA}"
 
-[[ -n "$REQUIREMENTS" ]] && sudo pip install -r "$REQUIREMENTS" || sudo /usr/local/bin/pip install -r "$REQUIREMENTS"
+# Determine pip to use for distro, always on user path
+PIP=$(which pip)
+
+#[[ -n "$REQUIREMENTS" ]] && sudo pip install -r "$REQUIREMENTS" || sudo /usr/local/bin/pip install -r "$REQUIREMENTS"
+[[ -n "$REQUIREMENTS" ]] && sudo ${PIP} install -r "$REQUIREMENTS"
 
 [[ -n "$SCRIPT" ]] && source "$SCRIPT"
 
