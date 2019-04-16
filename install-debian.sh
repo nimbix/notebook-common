@@ -56,7 +56,7 @@ done
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get -y install curl redir
+apt-get -y install curl redir sudo
 chmod 04555 /usr/bin/redir
 
 if [[ "${PYTHON}" = "3" ]]; then

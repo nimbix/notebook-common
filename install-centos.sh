@@ -56,7 +56,7 @@ done
 
 #yum update -y
 yum groupinstall -y "Development Tools"
-yum install -y wget curl python-devel zeromq-devel
+yum install -y wget curl python-devel zeromq-devel sudo
 yum install -y epel-release
 yum makecache
 
