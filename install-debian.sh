@@ -56,7 +56,7 @@ done
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get -y install curl redir sudo
+apt-get -y install redir sudo
 chmod 04555 /usr/bin/redir
 
 if [[ "${PYTHON}" = "3" ]]; then
@@ -65,6 +65,7 @@ if [[ "${PYTHON}" = "3" ]]; then
     pip install --upgrade packaging appdirs jupyter
 elif [[ "${PYTHON}" = "c" ]]; then
     conda install -y jupyter
+    conda clean -y --all
 else
     apt-get -y install python-pip
     python -m pip install --upgrade pip setuptools

@@ -54,9 +54,8 @@ while getopts "b:3c" opt; do
     esac
 done
 
-#yum update -y
 yum groupinstall -y "Development Tools"
-yum install -y wget curl python-devel zeromq-devel sudo
+yum install -y wget python-devel zeromq-devel sudo
 yum install -y epel-release
 yum makecache
 
@@ -67,6 +66,7 @@ if [[ "${PYTHON}" = "3" ]]; then
     pip3 install --upgrade packaging appdirs jupyter
 elif [[ "${PYTHON}" = "c" ]]; then
     conda install -y jupyter
+    conda clean -y --all
 else
     yum install -y python2-pip
     python -m pip install --upgrade pip setuptools
