@@ -50,6 +50,7 @@ while getopts "r:s:c:p:lu:" opt; do
             ;;
         u)
             BASEURL="${OPTARG}"
+            ;;
         *)
             echo "usage: $0 [-l]][-r <requirements-path>] [-s <script-path>]" >&2
             echo "      [-c <conda-environment>] [-p <user-port>]" >&2
