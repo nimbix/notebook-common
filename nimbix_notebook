@@ -31,7 +31,7 @@
 
 set -e
 
-while getopts "r:s:c:p:l" opt; do
+while getopts "r:s:c:p:lu:" opt; do
     case ${opt} in
         r)
             REQUIREMENTS="${OPTARG}"
@@ -48,6 +48,8 @@ while getopts "r:s:c:p:l" opt; do
         l)
             LOCAL_TESTING=1
             ;;
+        u)
+            BASEURL="${OPTARG}"
         *)
             echo "usage: $0 [-l]][-r <requirements-path>] [-s <script-path>]" >&2
             echo "      [-c <conda-environment>] [-p <user-port>]" >&2
@@ -55,6 +57,7 @@ while getopts "r:s:c:p:l" opt; do
             echo "  use -r to specify a requirements.txt file for pip" >&2
             echo "  use -s to source an activation/environment script" >&2
             echo "  use -p to specify user port for notebook" >&2
+            echo "  use -u to specify base_url for notebook" >&2
             echo "  use -l for local testing w/ Docker" >&2
             exit 1
             ;;
@@ -63,6 +66,9 @@ done
 
 # default internal Jupyter port is 8888 unless overridden
 [[ -z "${PORT}" ]] && PORT=8888
+
+# default base_url to '/'
+[[ -z "${BASEURL}" ]] && BASEURL='/'
 
 # fix up path as pip installs in different locations per python revision
 export PATH=$PATH:/usr/local/bin
@@ -92,10 +98,12 @@ if [[ ! -z "${LOCAL_TESTING}" ]]; then
     # Create non-privileged user for local test
     useradd -m -s /bin/bash nimbix 2>&1 || /bin/true
     su - nimbix -c "eval ${CONDA_ENV} && jupyter notebook --ip=0.0.0.0 \
-        --no-browser --port=${PORT} --NotebookApp.token=''"
+        --no-browser --port=${PORT} --NotebookApp.token='' \
+        --NotebookApp.base_url=${BASEURL}"
 else
     cd /data
     exec jupyter notebook --ip=0.0.0.0 --no-browser --port=${PORT} \
         --certfile=/etc/JARVICE/cert.pem \
-        --NotebookApp.token=`cat /etc/JARVICE/random128.txt | cut -c 1-64`
+        --NotebookApp.token=`cat /etc/JARVICE/random128.txt | cut -c 1-64` \
+        --NotebookApp.base_url=${BASEURL}
 fi
