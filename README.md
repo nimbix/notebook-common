@@ -39,6 +39,12 @@ RUN bash /tmp/install-notebook-common -b "$BRANCH" -c -3 && rm /tmp/install-note
 /usr/local/bin/nimbix_notebook -c my-conda-env
 ```
 
+## Example setting base URL for the notebook server
+
+```
+/usr/local/bin/nimbix_notebook -u my-base-path
+```
+
 # Accessing the Jupyter Notebook
 Once started, the notebook may be accessed by clicking on the running application on the JARVICE dashboard. 
 Sessions are authenticated using randomly generated tokens.
