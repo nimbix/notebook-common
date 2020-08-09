@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2019, Nimbix, Inc.
+# Copyright (c) 2020, Nimbix, Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -59,10 +59,10 @@ yum install -y wget python-devel zeromq-devel sudo
 yum install -y epel-release
 yum makecache
 
-# Python 3, must choose python 3.4 or 3.6, defaulting here to 3.6
+# Python 3, must choose python 3.4 or 3.6, default is now 3.6 as python3
 if [[ "${PYTHON}" = "3" ]]; then
-    yum install -y python36-pip
-    python36 -m pip install --upgrade pip setuptools
+    yum install -y python3-pip
+    python3 -m pip install --upgrade pip setuptools
     pip3 install --upgrade packaging appdirs jupyter
 elif [[ "${PYTHON}" = "c" ]]; then
     conda install -y jupyter
