@@ -32,6 +32,9 @@
 set -x
 set -e
 
+echo "Print args to screen"
+echo $@
+
 while getopts "r:s:c:p:lu:" opt; do
     case ${opt} in
         r)
@@ -93,10 +96,8 @@ PIP=$(which pip)
 
 [[ -n "$SCRIPT" ]] && source "$SCRIPT"
 
-# Start the redir daemon, redirecting the external port to the Jupyter listener
-# sleep 5
+# Start the redir daemon, redirecting the external port to the Jupyter listener (Still need for v1...)
 # authbind --deep /usr/bin/redir --laddr=0.0.0.0 --lport=443 --caddr=0.0.0.0 --cport=${PORT} &
-# sleep 5
 
 if [[ ! -z "${LOCAL_TESTING}" ]]; then
     # Create non-privileged user for local test
