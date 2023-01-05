@@ -56,9 +56,15 @@ done
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get -y install redir sudo
+apt-get -y install redir sudo authbind
 chmod 04555 /usr/bin/redir
-setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/redir
+
+# setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/redir
+touch /etc/authbind/byport/80
+touch /etc/authbind/byport/443
+chmod 777 /etc/authbind/byport/80
+chmod 777 /etc/authbind/byport/443
+
 
 if [[ "${PYTHON}" = "3" ]]; then
     apt-get -y install python3-pip
