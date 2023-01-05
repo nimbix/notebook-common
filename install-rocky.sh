@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2019, Nimbix, Inc.
+# Copyright (c) 2020, Nimbix, Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,6 +29,7 @@
 # policies, either expressed or implied, of Nimbix, Inc.
 #
 
+set -x
 set -e
 
 while getopts "b:3c" opt; do
@@ -37,14 +38,14 @@ while getopts "b:3c" opt; do
             BRANCH="${OPTARG}"
             ;;
         3)
-            PYTHON="-3 "
+            PYTHON="3"
             ;;
         c)
-            PYTHON="-c "
+            PYTHON="c"
             ;;
         *)
             echo "usage: $0 [-b <branch>] [-p|-c]" >&2
-            echo "  use -b to specify notebook-common branch" >&2
+            echo "  use -b to specify notebook common branch" >&2
             echo "  use -3 to specify to use python3" >&2
             echo "  use -c to specify to use conda (must have conda installed)" >&2
             echo "default is to use python2" >&2
@@ -53,24 +54,46 @@ while getopts "b:3c" opt; do
     esac
 done
 
-# Install curl for distro to pull in distro-specific installer scripts
-if cat /etc/*release | grep -E 'Ubuntu|Debian'; then
-    OSDIST=debian
-    apt-get -y update && apt-get -y install curl
-elif cat /etc/*release | grep centos; then
-    OSDIST=centos
-    yum install -y curl
-elif cat /etc/*release | grep rocky; then
-    OSDIST=rocky
-    dnf install -y curl
+dnf groupinstall -y "Development Tools"
+dnf install -y wget python-devel zeromq-devel sudo
+dnf install -y epel-release
+dnf makecache
+
+# Python 3, must choose python 3.4 or 3.6, default is now 3.6 as python3
+if [[ "${PYTHON}" = "3" ]]; then
+    dnf install -y python3-pip
+    python3 -m pip install --upgrade pip setuptools
+    pip3 install --upgrade packaging appdirs jupyter
+elif [[ "${PYTHON}" = "c" ]]; then
+    conda install -y jupyter
+    conda clean -y --all
 else
-    echo "ERROR: unsupported image"
-    exit 1
+    dnf install -y python2-pip
+    python -m pip install --upgrade pip setuptools
+    pip install packaging appdirs jupyter
 fi
+dnf clean all
+
+# Install redir
+REDIR_VERSION="v2.2.1"
+mkdir /tmp/build-redir
+cd /tmp/build-redir
+wget https://github.com/troglobit/redir/archive/${REDIR_VERSION}.tar.gz
+tar -xf *.tar.gz
+cd redir*
+make all
+cp redir /usr/bin
+chmod 04555 /usr/bin/redir
+cd
+rm -rf /tmp/build-redir
+dnf groupremove -y "Development Tools"
 
 [[ -z ${BRANCH} ]] && BRANCH="master"
 
-cd /tmp
-curl -H 'Cache-Control: no-cache' \
-    https://raw.githubusercontent.com/nimbix/notebook-common/${BRANCH}/install-${OSDIST}.sh \
-    | su - -c '/bin/bash -s -- '"${PYTHON}-b${BRANCH}"
+cd /usr/local/bin
+curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/notebook-common/${BRANCH}/nimbix_notebook
+
+chmod 555 /usr/local/bin/nimbix_notebook
+
+mkdir -p /etc/NAE
+echo "https://%PUBLICADDR%/?token=%RANDOM64%" >/etc/NAE/url.txt

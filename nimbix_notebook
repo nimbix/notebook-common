@@ -88,7 +88,7 @@ fi
 # Determine pip to use for distro, always on user path
 PIP=$(which pip)
 
-[[ -n "$REQUIREMENTS" ]] && sudo ${PIP} install -r "$REQUIREMENTS"
+[[ -n "$REQUIREMENTS" ]] && ${PIP} install -r "$REQUIREMENTS" --user
 
 [[ -n "$SCRIPT" ]] && source "$SCRIPT"
 
