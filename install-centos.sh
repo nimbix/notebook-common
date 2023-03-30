@@ -75,17 +75,6 @@ fi
 yum clean all
 
 # Install redir
-REDIR_VERSION="v2.2.1"
-mkdir /tmp/build-redir
-cd /tmp/build-redir
-wget https://github.com/troglobit/redir/archive/${REDIR_VERSION}.tar.gz
-tar -xf *.tar.gz
-cd redir*
-make all
-cp redir /usr/bin
-chmod 04555 /usr/bin/redir
-cd
-rm -rf /tmp/build-redir
 yum groupremove -y "Development Tools"
 
 [[ -z ${BRANCH} ]] && BRANCH="master"
@@ -96,4 +85,4 @@ curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/no
 chmod 555 /usr/local/bin/nimbix_notebook
 
 mkdir -p /etc/NAE
-echo "https://%PUBLICADDR%/?token=%RANDOM64%" >/etc/NAE/url.txt
+echo "https://%PUBLICADDR%:5902/?token=%RANDOM64%" >/etc/NAE/url.txt

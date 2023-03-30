@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2019, Nimbix, Inc.
+# Copyright (c) 2023, Nimbix, Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -65,8 +65,9 @@ while getopts "r:s:c:p:lu:" opt; do
     esac
 done
 
-# default internal Jupyter port is 8888 unless overridden
-[[ -z "${PORT}" ]] && PORT=8888
+# default internal Jupyter port is 5902 unless overridden
+PORTNUM=${JARVICE_SERVICE_PORT:-5902}
+[[ -z "${PORT}" ]] && PORT=$PORTNUM
 
 # default base_url to '/'
 [[ -z "${BASEURL}" ]] && BASEURL='/'
@@ -92,9 +93,6 @@ PIP=$(which pip)
 
 [[ -n "$SCRIPT" ]] && source "$SCRIPT"
 
-# Start the redir daemon, redirecting the external port to the Jupyter listener
-redir --laddr=0.0.0.0 --lport=443 --caddr=0.0.0.0 --cport=${PORT} &
-
 if [[ ! -z "${LOCAL_TESTING}" ]]; then
     # Create non-privileged user for local test
     useradd -m -s /bin/bash nimbix 2>&1 || /bin/true
@@ -102,9 +100,8 @@ if [[ ! -z "${LOCAL_TESTING}" ]]; then
         --no-browser --port=${PORT} --NotebookApp.token='' \
         --NotebookApp.base_url=${BASEURL}"
 else
-    cd /data
+    cd /data 2>/dev/null || cd /tmp
     exec jupyter notebook --ip=0.0.0.0 --no-browser --port=${PORT} \
-        --certfile=/etc/JARVICE/cert.pem \
         --NotebookApp.token=`cat /etc/JARVICE/random128.txt | cut -c 1-64` \
         --NotebookApp.base_url=${BASEURL}
 fi

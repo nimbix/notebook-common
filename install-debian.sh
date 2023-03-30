@@ -55,9 +55,6 @@ while getopts "b:3c" opt; do
 done
 
 export DEBIAN_FRONTEND=noninteractive
-apt-get update
-apt-get -y install redir sudo
-chmod 04555 /usr/bin/redir
 
 if [[ "${PYTHON}" = "3" ]]; then
     apt-get -y install python3-pip
@@ -81,4 +78,4 @@ curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/no
 chmod 555 /usr/local/bin/nimbix_notebook
 
 mkdir -p /etc/NAE
-echo "https://%PUBLICADDR%/?token=%RANDOM64%" >/etc/NAE/url.txt
+echo "https://%PUBLICADDR%:5902/?token=%RANDOM64%" >/etc/NAE/url.txt

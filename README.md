@@ -54,11 +54,19 @@ Sessions are authenticated using randomly generated tokens.
 ## Example starting notebook on local machine
 
 ```
-docker run --rm -h JARVICE -p 8443:443 mycontainer /usr/local/bin/nimbix_notebook -l
+docker run --rm -h JARVICE -p 5902:5902 mycontainer /usr/local/bin/nimbix_notebook -l
 ```
 
 (Replace ```mycontainer``` with the name of the Docker image you built locally.)
 
 ## Connecting to local notebook
-To connect to the above example container running the notebook, open a browser and browse to [http://localhost:8443](http://localhost:8443). 
+To connect to the above example container running the notebook, open a browser and browse to [http://localhost:5902](http://localhost:5902). 
 Note: Local testing does not use https:// or password/token authentication.
+
+# AppDef notes
+If using the `url` key in the AppDef, set to exactly this value:
+
+```
+https://%PUBLICADDR%:5902/tree?token=%RANDOM64%
+```
+
