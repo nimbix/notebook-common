@@ -67,6 +67,8 @@ Note: Local testing does not use https:// or password/token authentication.
 If using the `url` key in the AppDef, set to exactly this value:
 
 ```
-https://%PUBLICADDR%:5902/tree?token=%RANDOM64%
+http://%PUBLICADDR%:5902/tree?token=%RANDOM64%
 ```
+
+JARVICE will automatically SSL-terminate and rewrite the address for the appropriate site Ingress configuration.
 

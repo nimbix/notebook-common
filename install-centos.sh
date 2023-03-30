@@ -85,4 +85,4 @@ curl -H 'Cache-Control: no-cache' -O https://raw.githubusercontent.com/nimbix/no
 chmod 555 /usr/local/bin/nimbix_notebook
 
 mkdir -p /etc/NAE
-echo "https://%PUBLICADDR%:5902/?token=%RANDOM64%" >/etc/NAE/url.txt
+echo "http://%PUBLICADDR%:5902/?token=%RANDOM64%" >/etc/NAE/url.txt
